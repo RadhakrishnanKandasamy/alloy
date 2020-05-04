@@ -1,9 +1,10 @@
 dist: xenial
 os: linux
 language: node_js
-node_js: 'stable'
+node_js: stable
 install:
 - npm i -g npm
+- npm install -g allure-commandline
 addons:
   chrome: stable
   firefox: latest
@@ -11,25 +12,28 @@ addons:
     organization: adobeinc
 services:
 - xvfb
-
 jobs:
   include:
-      script:
-      - npm ci
-      - if [ "$TRAVIS_EVENT_TYPE" == "cron" ]; then npm run functional:cron:prod; fi
-      - if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then npm run build:prod; fi
-      - if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then npm run functional:ci; fi
-      - if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then npm run functional:ci:bs; fi
-      - if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then npm run test:saucelabs; fi
-
+    script:
+    - npm ci
+    - if [ "$TRAVIS_EVENT_TYPE" == "cron" ]; then npm run functional:cron:prod; fi
+    - if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then npm run build:prod; fi
+    - if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then npm run functional:local:allure; fi
+    - if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then npm run functional:ci:bs; fi
+    - if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then npm run test:saucelabs; fi
 notifications:
   slack: adobedx:AlI4WB2ojGDcqsBEVZ1EGsCR
   email:
     recipients:
-      - mowla@adobe.com
-      - khoury@adobe.com
-      - aahardy@adobe.com
+    - mowla@adobe.com
+    - khoury@adobe.com
+    - aahardy@adobe.com
     on_failure: always
-  
 before_install:
 - stty cols 80
+after_script:
+- chmod 777 scripts/allure_report.sh
+- scripts/allure_report.sh
+env:
+  global:
+    secure: 0ZJwcdGutXq8oSlHAkUbbGRiJPBpR/Nbx5KgPpCnenkWpwZ6ZaQ/LRrMS+KtUhLq92RJMGNbrHsScz5Gde/dGn20Xx9vKOemNm6YIIC5gUfeiFAtxEMsHB3OeknLJwzXsEm6GC8Z1teaWfmGM52nD9qRLVQDfpMaqJrtNCpD+aBZzskVg/LMZ06Vab2CyoQHJq497ar6xdp5mDywugsI+JOB5UOcyHg8AjAERe3iNR4nIiuSdDuy9TJGX3QvTODDN4ESkEsP4Zk86qW9dFnz5k4vSU/WVWSGqeBX17BFnxGy6WwNgINDnanXhGNak5ZYajY4jamSwNvd58K5u7D5DqB6r1Rnqnmo4Lp9P6pXOTcNhEi1o6tL5K0ixdz0YYMtcoQNXOK0mRjIV1OYShAnYys/TRYkVwrZbYlNSSCqXnlQbx5W75EmRXB+WI78NP+FjyYOjthmcOwKyzB3MLRRPIQ1uk0M+3DmnVP+1GWgtVWkK8Q5cCt++mx7qL0lfEUcIHVEImFyfFu0DSmpxsdO+PwkjACJaUFVwdhuOmAlInTHJt9F4hY6LnfLnfJLnqS6/2D5RxGdY+A9syHywoB/IFTM9mTFkE6A/xqUT/vwkqy0U2bjaMytVklQDWvHB73db8xCJUHL0xXEkUbP6fSfI3mn9cb8iwNBVNoV1cjxTk8=
