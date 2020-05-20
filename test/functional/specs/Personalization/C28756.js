@@ -3,19 +3,11 @@ import createNetworkLogger from "../../helpers/networkLogger";
 import { responseStatus } from "../../helpers/assertions/index";
 import fixtureFactory from "../../helpers/fixtureFactory";
 import configureAlloyInstance from "../../helpers/configureAlloyInstance";
-import {
-  compose,
-  orgMainConfigMain,
-  debugEnabled
-} from "../../helpers/constants/configParts";
 import getResponseBody from "../../helpers/networkLogger/getResponseBody";
 import createResponse from "../../../../src/core/createResponse";
+import debugEnabledConfig from "../../helpers/constants/debugEnabledConfig";
 
 const networkLogger = createNetworkLogger();
-const config = compose(
-  orgMainConfigMain,
-  debugEnabled
-);
 const scope = "alloy-test-scope-1";
 const decisionContent = "<h3>welcome to TARGET AWESOME WORLD!!! </h3>";
 
@@ -44,7 +36,7 @@ const triggerAlloyEvent = ClientFunction(decisionScope => {
 });
 
 test("Test C28756: A form based offer should return if event command contains its scope.", async () => {
-  await configureAlloyInstance("alloy", config);
+  await configureAlloyInstance("alloy", debugEnabledConfig);
 
   const result = await triggerAlloyEvent(scope);
 
