@@ -9,6 +9,14 @@
       name="viewport"
       content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
     />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' *.demdex.net;
+          script-src 'self' 'unsafe-inline' assets.adobedtm.com cdn.tt.omtrdc.net;
+          style-src 'self' 'unsafe-inline' cdn.tt.omtrdc.net;
+          img-src * data:;
+          connect-src 'self' *.localalloy.com *.alloyio.com ws://localhost:3000 http://localhost:8080 unifiedjslab.tt.omtrdc.net *.demdex.net *.adobedc.net https://edgegateway.azurewebsites.net konductor-qe.apps-exp-edge-npe-va6.experience-edge.adobeinternal.net"
+    />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="keywords" content="Intense web design multipurpose template" />
     <meta name="date" content="Apr 26" />
@@ -36,6 +44,11 @@
       </div>
       <script src="js/html5shiv.min.js"></script>
     <![endif]-->
+    <!-- Using Unified JS LAB, property alloyio.com -->
+    <script
+      src="//assets.adobedtm.com/1281f6ff0c59/c2b711dc1596/launch-c80198ec8c6d-development.js"
+      async
+    ></script>
   </head>
   <body>
     <!-- Page-->
