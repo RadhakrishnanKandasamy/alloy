@@ -111,26 +111,32 @@ if (instanceNamespaces) {
         createDataCollectionRequestPayload,
         sendEdgeNetworkRequest
       });
-
       return initializeComponents({
         componentCreators,
         lifecycle,
         componentRegistry,
         getImmediatelyAvailableTools(componentNamespace) {
+          const componentLogger = logController.createComponentLogger(
+            componentNamespace
+          );
           return {
             config,
             consent,
             eventManager,
-            logger: logController.createComponentLogger(componentNamespace),
+            logger: componentLogger,
             lifecycle,
-            sendEdgeNetworkRequest
+            sendEdgeNetworkRequest,
+            handleError: handleErrorFactory({
+              errorPrefix: `[${instanceNamespace}] [${componentNamespace}]`,
+              logger: componentLogger
+            })
           };
         }
       });
     };
 
     const handleError = handleErrorFactory({
-      instanceNamespace,
+      errorPrefix: `[${instanceNamespace}]`,
       logger
     });
 
